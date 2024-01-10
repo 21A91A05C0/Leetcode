@@ -1,0 +1,56 @@
+class Solution {
+public:
+void findinorder(TreeNode* root,unordered_map<int,vector<int>>&adj)
+{
+    if(root==NULL) return ;
+    if(root->left!=NULL ) 
+    {
+        adj[root->val].push_back(root->left->val);
+        adj[root->left->val].push_back(root->val);
+    }
+    if(root->right!=NULL) 
+    {
+        adj[root->val].push_back(root->right->val);
+        adj[root->right->val].push_back(root->val);
+    }
+    findinorder(root->left,adj);
+    findinorder(root->right,adj);
+
+
+
+}
+    int amountOfTime(TreeNode* root, int start) 
+    {
+        vector<int>nodes;
+        // finding the unordered graph
+        unordered_map<int,vector<int>>adj;
+        findinorder(root,adj);
+        set<int>st;
+        int ans=0;
+        // do bfs
+        queue<int>qu;
+        qu.push(start);
+        st.insert(start);
+        while(!qu.empty())
+        {
+            int s=qu.size();
+            //counting how many times we are doing bfs by (prabhu anna)
+            ans++;
+            while(s--)
+            {
+                int k=qu.front();
+                qu.pop();
+                for(auto it:adj[k])
+                {
+                    if(st.find(it)==st.end())
+                    {
+                        qu.push(it);
+                        st.insert(it);
+                    }
+                }
+            }
+        }
+        return ans-1;
+
+    }
+};

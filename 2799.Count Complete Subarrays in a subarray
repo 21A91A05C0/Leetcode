@@ -1,0 +1,42 @@
+//https://leetcode.com/problems/count-complete-subarrays-in-an-array/description/
+class Solution {
+public:
+    int countCompleteSubarrays(vector<int>& nums) 
+    {
+        int n=nums.size();
+        map<int,int>mpp;
+        for(int i=0;i<nums.size();i++) mpp[nums[i]]++;
+        int k=mpp.size();
+        int i=0;
+        int j=0;
+        int ans=0;
+        map<int,int>m;
+        while(j<n)
+        {
+            
+            m[nums[j]]++;
+            int h=0;
+            
+            for(auto it:m) 
+            {
+                if(it.second!=0) h++;
+            }
+            //cout<<h<<" "<<k<<endl;
+// we will take out the values untill we have the substring of k distinct elements 
+            while(h==k)
+            {
+                ans+=n-j;
+                m[nums[i]]--;
+                if(m[nums[i]]==0)
+                {
+                    h--;
+                }
+                i++;
+            }
+            j++;
+            
+        }
+        return ans;
+        
+    }
+};
